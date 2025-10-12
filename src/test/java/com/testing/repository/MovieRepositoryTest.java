@@ -1,6 +1,7 @@
 package com.testing.repository;
 
 import com.testing.model.Movie;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +19,7 @@ public class MovieRepositoryTest {
     private MovieRepository movieRepository;
 
     @Test
+    @DisplayName("it should save the movie to the database")
     void save(){
         //Arrange - Setting up the data that required for the test case
         Movie avatarMovie = new Movie();
