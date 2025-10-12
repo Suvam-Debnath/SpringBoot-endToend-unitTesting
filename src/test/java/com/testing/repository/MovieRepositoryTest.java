@@ -8,8 +8,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
@@ -34,6 +36,28 @@ public class MovieRepositoryTest {
         assertNotNull(newMovie);
         assertThat(newMovie.getId()).isNotEqualTo(null);
 
+    }
+    @Test
+    @DisplayName("it should return the movies list with size of 2")
+    void getAllMovies(){
+
+        //Arrange - Setting up the data that required for the test case
+        Movie avatarMovie = new Movie();
+        avatarMovie.setName("Avatar");;
+        avatarMovie.setGenera("Action");
+        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+        movieRepository.save(avatarMovie);
+
+        Movie titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+        movieRepository.save(titanicMovie);
+
+        List<Movie> list = movieRepository.findAll();
+        assertNotNull(list);
+        assertThat(list).isNotNull();
+        assertEquals(2, list.size());
     }
 
 }
