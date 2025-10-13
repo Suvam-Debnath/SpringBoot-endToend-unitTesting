@@ -77,4 +77,21 @@ public class MovieRepositoryTest {
         assertThat(titanicMovie.getReleaseDate()).isBefore(LocalDate.of(2000, Month.DECEMBER, 19));
     }
 
+    @Test
+    @DisplayName("It should update the existing movie with genra ACTION ")
+    void updateMovie(){
+        Movie titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+        movieRepository.save(titanicMovie);
+
+        Movie existingMovie = movieRepository.findById(titanicMovie.getId()).get();
+        existingMovie.setGenera("Action");
+        Movie newMovie = movieRepository.save(existingMovie);
+
+        assertEquals("Action",newMovie.getGenera());
+        assertEquals("Titanic",newMovie.getName());
+    }
+
 }
