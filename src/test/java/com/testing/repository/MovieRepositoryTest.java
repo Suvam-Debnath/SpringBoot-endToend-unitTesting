@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,6 +93,30 @@ public class MovieRepositoryTest {
 
         assertEquals("Action",newMovie.getGenera());
         assertEquals("Titanic",newMovie.getName());
+    }
+
+    @Test
+    @DisplayName("It should delete the existing movie")
+    void deleteMovie(){
+        Movie avatarMovie = new Movie();
+        avatarMovie.setName("Avatar");;
+        avatarMovie.setGenera("Action");
+        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+        movieRepository.save(avatarMovie);
+        Long id = avatarMovie.getId();
+
+        Movie titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+        movieRepository.save(titanicMovie);
+
+        movieRepository.delete(avatarMovie);
+        Optional<Movie> existingMovie = movieRepository.findById(id);
+        List<Movie> list = movieRepository.findAll();
+
+        assertEquals(1,list.size());
+        assertThat(existingMovie).isEmpty();  // after deleting avatar movie it should return empty
     }
 
 }
