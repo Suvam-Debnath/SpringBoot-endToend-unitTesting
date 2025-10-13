@@ -58,6 +58,23 @@ public class MovieRepositoryTest {
         assertNotNull(list);
         assertThat(list).isNotNull();
         assertEquals(2, list.size());
+
+    }
+
+    @Test
+    @DisplayName("it should return the movie by its id")
+    void getMovieId(){
+        Movie titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+        movieRepository.save(titanicMovie);
+
+        Movie existingMovie = movieRepository.findById(titanicMovie.getId()).get();
+
+        assertNotNull(existingMovie);
+        assertEquals("Romance",existingMovie.getGenera());
+        assertThat(titanicMovie.getReleaseDate()).isBefore(LocalDate.of(2000, Month.DECEMBER, 19));
     }
 
 }
