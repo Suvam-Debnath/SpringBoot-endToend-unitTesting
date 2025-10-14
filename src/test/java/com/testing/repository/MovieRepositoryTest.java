@@ -119,4 +119,25 @@ public class MovieRepositoryTest {
         assertThat(existingMovie).isEmpty();  // after deleting avatar movie it should return empty
     }
 
+    @Test
+    @DisplayName("It should return the list of movies with genera ROMANCE")
+    void getMoviesByGenera(){
+        Movie avatarMovie = new Movie();
+        avatarMovie.setName("Avatar");;
+        avatarMovie.setGenera("Action");
+        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+        movieRepository.save(avatarMovie);
+
+        Movie titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+        movieRepository.save(titanicMovie);
+
+        List<Movie> list = movieRepository.findByGenera("Romance");
+
+        assertNotNull(list);
+        assertThat(list.size()).isEqualTo(1);
+    }
+
 }
