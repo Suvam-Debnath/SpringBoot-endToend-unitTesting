@@ -1,6 +1,7 @@
 package com.testing.repository;
 
 import com.testing.model.Movie;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,27 @@ public class MovieRepositoryTest {
     @Autowired
     private MovieRepository movieRepository;
 
+    private Movie avatarMovie;
+    private Movie titanicMovie;
+
+    @BeforeEach
+    void init(){
+        avatarMovie = new Movie();
+        avatarMovie.setName("Avatar");;
+        avatarMovie.setGenera("Action");
+        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+
+        titanicMovie = new Movie();
+        titanicMovie.setName("Titanic");
+        titanicMovie.setGenera("Romance");
+        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+    }
+
     @Test
     @DisplayName("it should save the movie to the database")
     void save(){
         //Arrange - Setting up the data that required for the test case
-        Movie avatarMovie = new Movie();
-        avatarMovie.setName("Avatar");;
-        avatarMovie.setGenera("Action");
-        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+
 
         //Act - Calling a method/Unit that is being tested
         Movie newMovie = movieRepository.save(avatarMovie);
@@ -43,16 +57,7 @@ public class MovieRepositoryTest {
     void getAllMovies(){
 
         //Arrange - Setting up the data that required for the test case
-        Movie avatarMovie = new Movie();
-        avatarMovie.setName("Avatar");;
-        avatarMovie.setGenera("Action");
-        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
         movieRepository.save(avatarMovie);
-
-        Movie titanicMovie = new Movie();
-        titanicMovie.setName("Titanic");
-        titanicMovie.setGenera("Romance");
-        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
         movieRepository.save(titanicMovie);
 
         List<Movie> list = movieRepository.findAll();
@@ -65,10 +70,7 @@ public class MovieRepositoryTest {
     @Test
     @DisplayName("it should return the movie by its id")
     void getMovieId(){
-        Movie titanicMovie = new Movie();
-        titanicMovie.setName("Titanic");
-        titanicMovie.setGenera("Romance");
-        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+
         movieRepository.save(titanicMovie);
 
         Movie existingMovie = movieRepository.findById(titanicMovie.getId()).get();
@@ -81,10 +83,7 @@ public class MovieRepositoryTest {
     @Test
     @DisplayName("It should update the existing movie with genra ACTION ")
     void updateMovie(){
-        Movie titanicMovie = new Movie();
-        titanicMovie.setName("Titanic");
-        titanicMovie.setGenera("Romance");
-        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
+
         movieRepository.save(titanicMovie);
 
         Movie existingMovie = movieRepository.findById(titanicMovie.getId()).get();
@@ -98,17 +97,10 @@ public class MovieRepositoryTest {
     @Test
     @DisplayName("It should delete the existing movie")
     void deleteMovie(){
-        Movie avatarMovie = new Movie();
-        avatarMovie.setName("Avatar");;
-        avatarMovie.setGenera("Action");
-        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+
         movieRepository.save(avatarMovie);
         Long id = avatarMovie.getId();
 
-        Movie titanicMovie = new Movie();
-        titanicMovie.setName("Titanic");
-        titanicMovie.setGenera("Romance");
-        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
         movieRepository.save(titanicMovie);
 
         movieRepository.delete(avatarMovie);
@@ -122,16 +114,9 @@ public class MovieRepositoryTest {
     @Test
     @DisplayName("It should return the list of movies with genera ROMANCE")
     void getMoviesByGenera(){
-        Movie avatarMovie = new Movie();
-        avatarMovie.setName("Avatar");;
-        avatarMovie.setGenera("Action");
-        avatarMovie.setReleaseDate(LocalDate.of(2000, Month.APRIL,22));
+
         movieRepository.save(avatarMovie);
 
-        Movie titanicMovie = new Movie();
-        titanicMovie.setName("Titanic");
-        titanicMovie.setGenera("Romance");
-        titanicMovie.setReleaseDate(LocalDate.of(1997, Month.DECEMBER, 19));
         movieRepository.save(titanicMovie);
 
         List<Movie> list = movieRepository.findByGenera("Romance");
